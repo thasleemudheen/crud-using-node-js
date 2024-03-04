@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <style>
+        label {
+            padding-top: 50px;
+            font-size: 18px;
+            margin-left: 100px;
+        }
+        input {
+            width: 400px;
+            height: 25px;
+            margin-left: 100px;
+            margin-top: 10px;
+        }
+        #headtwo {
+            padding-top: 50px;
+        }
+        #submitbtn {
+            width: 100px;
+            margin-left: 250px;
+            font-size: 16px;
+        }
+        small {
+            font-size: 14px;
+            color: red;
+            margin-left: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="formbackground" style="background-color: rgb(70, 18, 155);height: 600px;width: 600px;margin-left: 350px;">
+        <form id="myForm" action="/updateUser" method="POST">
+            <h2 id="headtwo" style="text-align: center;">Edit User</h2>
+            <input type="hidden" name="userId" id="editUserId" value="">
+            <label for="name">Name:</label><br>
+            <input type="text" name="name" id="editName" value="" required><br>
+            <label for="email">Email:</label><br>
+            <input type="email" name="email" id="editEmail" value="" required><br>
+            <label for="phone">Phone:</label><br>
+            <input type="text" name="phoneNumber" id="editPhone" value="" required><br>
+            <label for="password">Password:</label><br>
+            <input type="password" name="password" id="editPassword" value="" required><br>
+            <input type="submit" value="Update" id="submitbtn">
+        </form>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userId');
+    const editUserIdInput = document.getElementById('editUserId');
+    const editNameInput = document.getElementById('editName');
+    const editEmailInput = document.getElementById('editEmail');
+    const editPhoneInput = document.getElementById('editPhone');
+    const editPasswordInput = document.getElementById('editPassword');
+
+    editUserIdInput.value = userId;
+
+    fetch(`/editUser?userId=${encodeURIComponent(userId)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error fetching user data: ${response.statusText}`);
+            }
+            return response.text();
+        })
+        .then(user => {
+            console.log('Fetched user data:', user);
+
+            const userData = JSON.parse(user);
+
+            editNameInput.value = userData.username || '';
+            editEmailInput.value = userData.email || '';
+            editPhoneInput.value = userData.phoneNumber || '';
+            editPasswordInput.value = userData.password || '';
+        })
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+        });
+});
+
+    </script>
+    
+</body>
+</html>

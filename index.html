@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration form</title>
+    <style>
+         label{
+            padding-top: 50px;
+            font-size: 18px;
+            margin-left: 100px;
+        }
+        input{
+            width: 400px;
+            height: 25px;
+            margin-left: 100px;
+            margin-top: 10px;
+        }
+        #headtwo{
+            padding-top: 50px;
+        }
+        #submitbtn{
+            width: 100px;
+            margin-left: 250px;
+            font-size: 16px;
+        }
+        small{
+            font-size: 14px;
+            color: red;
+            margin-left: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="formbackground" style="background-color: aqua;height: 600px;width: 600px;margin-left: 350px;">
+        <form id="myForm" action="/submit" method="POST">
+            <h2 id="headtwo" style="text-align: center;">Registration form</h2>
+            <label for="name">Your name</label><br>
+            <input type="text" name="username" id="username" placeholder="enter your name"><br>
+            <small id="errorname"></small><br>
+            <label for="mail">E-mail</label><br>
+            <input type="email" name="email" id="email" placeholder="your email"><br>
+            <small id="emailerror"></small><br>
+            <label for="mobilenumber">Phone number</label><br>
+            <input type="number" name="phoneNumber" id="phonenumber" placeholder="your phone number"><br>
+            <small id="phonenumbererror"></small><br>   
+            <label for="securitypin">Password</label><br>
+            <input type="password" name="password" id="password" placeholder="enter a password"><br>
+            <small id="passworderror"></small><br>
+            <input type="submit" name="submitbtn" id="submitbtn"  >
+        </form>
+
+    </div>
+
+    <script>
+        const form = document.getElementById('myForm');
+
+        form.addEventListener('submit', function(event) {
+            if (!validateForm()) {
+                event.preventDefault();
+            }
+        });
+        function validateForm() {
+            const nameInput = document.getElementById('username');
+            const emailInput = document.getElementById('email');
+            const numberInput = document.getElementById('phonenumber');
+            const passwordInput = document.getElementById('password');
+
+            document.getElementById('errorname').innerHTML = '';
+            document.getElementById('emailerror').innerHTML = '';
+            document.getElementById('phonenumbererror').innerHTML = '';
+            document.getElementById('passworderror').innerHTML = '';
+
+            let isValid = true;
+            if (!nameInput.value.match(/^[a-zA-Z\s]{3,}$/)) {
+                document.getElementById('errorname').innerHTML = 'Enter a valid name';
+                isValid = false;
+            }
+            if (!emailInput.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                document.getElementById('emailerror').innerHTML = 'Invalid email';
+                isValid = false;
+            }
+            if (!numberInput.value.match(/^\d{10}$/)) {
+                document.getElementById('phonenumbererror').innerHTML = 'Invalid phone number';
+                isValid = false;
+            }
+            if (!passwordInput.value.match(/^(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8,}$/)) {
+                document.getElementById('passworderror').innerHTML = 'Invalid password';
+                isValid = false;
+            }
+            return isValid;
+        }
+    </script>
+</body>
+</html>
